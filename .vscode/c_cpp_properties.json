@@ -1,0 +1,19 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "/home/joseba/.arduino15/packages/arduino/tools/**",
+                "/home/joseba/.arduino15/packages/arduino/hardware/samd/1.8.9/**"
+            ],
+            "forcedInclude": [
+                "/home/joseba/.arduino15/packages/arduino/hardware/samd/1.8.9/cores/arduino/Arduino.h"
+            ],
+            "intelliSenseMode": "gcc-x64",
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "gnu17",
+            "cppStandard": "gnu++14"
+        }
+    ],
+    "version": 4
+}
