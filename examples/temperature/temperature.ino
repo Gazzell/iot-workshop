@@ -29,45 +29,45 @@
 // as the current DHT reading algorithm adjusts itself to work on faster procs.
 DHT dht(DHTPIN, DHTTYPE);
 
+float currentTemperature = 0.0;
+
 void setup() {
+    pinMode(LED_BUILTIN, OUTPUT);
     Serial.begin(9600);
-    Serial.println(F("DHTxx test!"));
+    Serial.println(F("Heat warning!"));
 
     dht.begin();
+}
+
+void printTemperature (float temperature) {
+    Serial.print(temperature);
+    Serial.println(F("°C"));
 }
 
 void loop() {
     // Wait a few seconds between measurements.
     delay(2000);
 
-    // Reading temperature or humidity takes about 250 milliseconds!
-    // Sensor readings may also be up to 2 seconds 'old' (its a very slow sensor)
-    float h = dht.readHumidity();
     // Read temperature as Celsius (the default)
-    float t = dht.readTemperature();
-    // Read temperature as Fahrenheit (isFahrenheit = true)
-    float f = dht.readTemperature(true);
+    float temperature = dht.readTemperature();
 
     // Check if any reads failed and exit early (to try again).
-    if (isnan(h) || isnan(t) || isnan(f)) {
-        Serial.println(F("Failed to read from DHT sensor!"));
+    if (isnan(temperature)) {
         return;
     }
 
-    // Compute heat index in Fahrenheit (the default)
-    float hif = dht.computeHeatIndex(f, h);
-    // Compute heat index in Celsius (isFahreheit = false)
-    float hic = dht.computeHeatIndex(t, h, false);
+    if (temperature != currentTemperature) {
+        Serial.print(F("Temperature: "));
+        printTemperature(temperature);
+    }
+    digitalWrite(LED_BUILTIN, LOW);
 
-    Serial.print(F("Humidity: "));
-    Serial.print(h);
-    Serial.print(F("%  Temperature: "));
-    Serial.print(t);
-    Serial.print(F("°C "));
-    Serial.print(f);
-    Serial.print(F("°F  Heat index: "));
-    Serial.print(hic);
-    Serial.print(F("°C "));
-    Serial.print(hif);
-    Serial.println(F("°F"));
+    if (temperature > 24.0) {
+        if (temperature != currentTemperature) {
+            Serial.print(F("Warning, high temperature: "));
+            printTemperature(temperature);
+        }
+        digitalWrite(LED_BUILTIN, HIGH);
+    }
+    currentTemperature = temperature;
 }
