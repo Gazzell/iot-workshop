@@ -3,11 +3,17 @@
         {
             "name": "Linux",
             "includePath": [
+                "/home/joseba/Arduino/libraries/DHT_sensor_library",
                 "/home/joseba/.arduino15/packages/arduino/tools/**",
+                "/home/joseba/Arduino/libraries/**",
+                "/home/joseba/Downloads/arduino-1.8.13/libraries/**",
                 "/home/joseba/.arduino15/packages/arduino/hardware/samd/1.8.9/**"
             ],
             "forcedInclude": [
                 "/home/joseba/.arduino15/packages/arduino/hardware/samd/1.8.9/cores/arduino/Arduino.h"
+            ],
+            "defines": [
+                "USBCON"
             ],
             "intelliSenseMode": "gcc-x64",
             "compilerPath": "/usr/bin/gcc",
