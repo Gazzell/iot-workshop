@@ -60,10 +60,6 @@ void setSeparatorPixels() {
     }
 }
 
-void fillTempGradient() {
-    pixels.fill(pixels.Color(30, 30, 20), 0, TEMP_PIXELS);
-}
-
 int getTemperatureUpperIndex(float temperature) {
     int index = 1;
     while (index < TEMPERATURE_RANGE_COUNT) {
@@ -110,7 +106,6 @@ bool readDHT(void*) {
     float h = dht.readHumidity();
     float t = dht.readTemperature();
 
-    // Check if any reads failed and exit early (to try again).
     if (isnan(h) || isnan(t)) {
         Serial.println(F("Failed to read from DHT sensor!"));
         return true;
@@ -127,6 +122,20 @@ bool readDHT(void*) {
 
     return true;
 }
+
+void updateDemoValues() {
+    currentHumidity += 0.01;
+    currentTemperature += 0.002;
+
+    if (currentHumidity > 100.0) {
+        currentHumidity = 0.0;
+    }
+
+    if (currentTemperature > MAX_TEMP + 10.0) {
+        currentTemperature = MIN_TEMP - 10.0;
+    }
+}
+
 
 void setup() {
     Serial.begin(9600);
@@ -151,16 +160,7 @@ void loop() {
     fillHumidity();
 
     if (DEMO_MODE) {
-        currentHumidity += 0.01;
-        currentTemperature += 0.001;
-
-        if (currentHumidity > 100.0) {
-            currentHumidity = 0.0;
-        }
-
-        if (currentTemperature > MAX_TEMP + 10.0) {
-            currentTemperature = MIN_TEMP - 10.0;
-        }
+        updateDemoValues();
     }
 
     pixels.show();
